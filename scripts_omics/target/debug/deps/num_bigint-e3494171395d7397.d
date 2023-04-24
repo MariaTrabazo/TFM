@@ -1,0 +1,12 @@
+/home/maria/Documentos/TFM/PEC2/scripts_omics/target/debug/deps/num_bigint-e3494171395d7397.rmeta: /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/num-bigint-0.2.6/src/lib.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/num-bigint-0.2.6/src/macros.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/num-bigint-0.2.6/src/bigint.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/num-bigint-0.2.6/src/biguint.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/num-bigint-0.2.6/src/algorithms.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/num-bigint-0.2.6/src/monty.rs
+
+/home/maria/Documentos/TFM/PEC2/scripts_omics/target/debug/deps/libnum_bigint-e3494171395d7397.rlib: /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/num-bigint-0.2.6/src/lib.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/num-bigint-0.2.6/src/macros.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/num-bigint-0.2.6/src/bigint.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/num-bigint-0.2.6/src/biguint.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/num-bigint-0.2.6/src/algorithms.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/num-bigint-0.2.6/src/monty.rs
+
+/home/maria/Documentos/TFM/PEC2/scripts_omics/target/debug/deps/num_bigint-e3494171395d7397.d: /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/num-bigint-0.2.6/src/lib.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/num-bigint-0.2.6/src/macros.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/num-bigint-0.2.6/src/bigint.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/num-bigint-0.2.6/src/biguint.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/num-bigint-0.2.6/src/algorithms.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/num-bigint-0.2.6/src/monty.rs
+
+/home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/num-bigint-0.2.6/src/lib.rs:
+/home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/num-bigint-0.2.6/src/macros.rs:
+/home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/num-bigint-0.2.6/src/bigint.rs:
+/home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/num-bigint-0.2.6/src/biguint.rs:
+/home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/num-bigint-0.2.6/src/algorithms.rs:
+/home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/num-bigint-0.2.6/src/monty.rs:
