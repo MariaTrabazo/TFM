@@ -1,0 +1,14 @@
+/home/maria/Documentos/TFM/PEC2/hello-world/target/debug/deps/bio_seq-762d1bd821ab3a67.rmeta: /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/bio-seq-0.9.0/src/lib.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/bio-seq-0.9.0/src/codec/mod.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/bio-seq-0.9.0/src/codec/amino.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/bio-seq-0.9.0/src/codec/dna.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/bio-seq-0.9.0/src/codec/iupac.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/bio-seq-0.9.0/src/error.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/bio-seq-0.9.0/src/kmer.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/bio-seq-0.9.0/src/seq/mod.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/bio-seq-0.9.0/src/seq/iterators.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/bio-seq-0.9.0/src/translation/mod.rs
+
+/home/maria/Documentos/TFM/PEC2/hello-world/target/debug/deps/bio_seq-762d1bd821ab3a67.d: /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/bio-seq-0.9.0/src/lib.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/bio-seq-0.9.0/src/codec/mod.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/bio-seq-0.9.0/src/codec/amino.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/bio-seq-0.9.0/src/codec/dna.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/bio-seq-0.9.0/src/codec/iupac.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/bio-seq-0.9.0/src/error.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/bio-seq-0.9.0/src/kmer.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/bio-seq-0.9.0/src/seq/mod.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/bio-seq-0.9.0/src/seq/iterators.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/bio-seq-0.9.0/src/translation/mod.rs
+
+/home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/bio-seq-0.9.0/src/lib.rs:
+/home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/bio-seq-0.9.0/src/codec/mod.rs:
+/home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/bio-seq-0.9.0/src/codec/amino.rs:
+/home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/bio-seq-0.9.0/src/codec/dna.rs:
+/home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/bio-seq-0.9.0/src/codec/iupac.rs:
+/home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/bio-seq-0.9.0/src/error.rs:
+/home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/bio-seq-0.9.0/src/kmer.rs:
+/home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/bio-seq-0.9.0/src/seq/mod.rs:
+/home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/bio-seq-0.9.0/src/seq/iterators.rs:
+/home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/bio-seq-0.9.0/src/translation/mod.rs:
