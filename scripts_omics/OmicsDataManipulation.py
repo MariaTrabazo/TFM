@@ -5,6 +5,16 @@ from memory_profiler import memory_usage
 import time
 from time import process_time
 from collections import defaultdict
+import pandas
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import confusion_matrix
+from matplotlib.colors import ListedColormap
+from sklearn.datasets import load_iris
+from sklearn import preprocessing
+from sklearn import utils
 
 
 def calculate_by_row():
@@ -103,8 +113,49 @@ def calculate_for_all_data():
 	cpu_diff = cpu_end - cpu_start       
 	end = time.time()
 	results = [end-start, cpu_diff]
+	
+def calculate_pca():
+	
+	start = time.time()
+	cpu_start = process_time()
+	
+	path = str(pathlib.Path(__file__).parent.resolve()) + "/table_counts.tsv"
+	df = pandas.read_csv(path, delimiter = '\t')
+	x = df.iloc[:, 1:len(df.columns)-2].values
+	y = df.iloc[:, len(df.columns)-1].values 
+	
+	x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.2, random_state = 0)
+	sc = StandardScaler()
+ 
+	x_train = sc.fit_transform(x_train)
+	x_test = sc.transform(x_test)
+	
+	pca = PCA(n_components = 2)
+ 
+	x_train = pca.fit_transform(x_train)
+	x_test = pca.transform(x_test)
+	 
+	explained_variance = pca.explained_variance_ratio_
+	
+	classifier = LogisticRegression(random_state = 0, max_iter=10000000)
+	lab = preprocessing.LabelEncoder()
+	y_train_transformed = lab.fit_transform(y_train)
+	
+	classifier.fit(x_train, y_train_transformed)
+	
+	y_pred = classifier.predict(x_test)
+	
+	
+	
+	cpu_end = process_time()
+	cpu_diff = cpu_end - cpu_start       
+	end = time.time()
+	results = [end-start, cpu_diff]
+
+
 			
-calculate_by_row()
-calculate_by_column()
-calculate_for_all_data()
+#calculate_by_row()
+#calculate_by_column()
+#calculate_for_all_data()
+calculate_pca()
 	
