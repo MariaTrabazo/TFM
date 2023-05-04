@@ -4,8 +4,8 @@ using GenomicAnnotations
 using DataFrames
 using StatsBase
 using MultivariateStats
-using Plots
-
+using PlotlyJS
+using RDatasets
 
 function calculate_by_column()
 	
@@ -81,15 +81,26 @@ end
 function calculate_pca()
 
 	start= time()
-	path = dirname(Base.source_path()) * "/table_counts.tsv"
-	df = CSV.read(path, DataFrame, select=[2,3,4,5,6,7,8,9,10])
+	path = dirname(Base.source_path()) * "/E-GEOD-22954.csv"
+	df = CSV.read(path, DataFrame)
 	
-	print(df)
+	
+	x = Matrix(df[2:floor(Int, nrow(df)/2), 2:end])'
+	y = Matrix(df[floor(Int, nrow(df)/2)+1:end, 2:end])'
+	
+	
+	M = fit(PCA, y; maxoutdim=2)
+	Yte = predict(M, x)
+	
+	#p=scatter(Yte, marker=:circle, linewidth=0)
+	display(plot(Yte, kind="bar"))
 	
 	dt = time() - start
 
 
 end
+
+
 
 #calculate_by_row()
 #calculate_by_column()

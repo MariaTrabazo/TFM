@@ -15,6 +15,7 @@ from matplotlib.colors import ListedColormap
 from sklearn.datasets import load_iris
 from sklearn import preprocessing
 from sklearn import utils
+import matplotlib.pyplot as plt
 
 
 def calculate_by_row():
@@ -119,33 +120,23 @@ def calculate_pca():
 	start = time.time()
 	cpu_start = process_time()
 	
-	path = str(pathlib.Path(__file__).parent.resolve()) + "/table_counts.tsv"
-	df = pandas.read_csv(path, delimiter = '\t')
-	x = df.iloc[:, 1:len(df.columns)-2].values
-	y = df.iloc[:, len(df.columns)-1].values 
+	path = str(pathlib.Path(__file__).parent.resolve()) + "/E-GEOD-22954.csv"
+	df = pandas.read_csv(path, delimiter = ',')
+	x = df.iloc[:, 1:len(df.columns)].values
+	y = df.iloc[:, 0].values 
 	
-	x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.2, random_state = 0)
 	sc = StandardScaler()
  
-	x_train = sc.fit_transform(x_train)
-	x_test = sc.transform(x_test)
+	x = sc.fit_transform(x)
 	
-	pca = PCA(n_components = 2)
- 
-	x_train = pca.fit_transform(x_train)
-	x_test = pca.transform(x_test)
-	 
-	explained_variance = pca.explained_variance_ratio_
-	
-	classifier = LogisticRegression(random_state = 0, max_iter=10000000)
-	lab = preprocessing.LabelEncoder()
-	y_train_transformed = lab.fit_transform(y_train)
-	
-	classifier.fit(x_train, y_train_transformed)
-	
-	y_pred = classifier.predict(x_test)
+	pca = PCA(n_components = 1)
+	principalComponents = pca.fit_transform(x)
+	principalDf = pandas.DataFrame(data = principalComponents, columns=['Values'])
+	principalDf.insert(0, "Id", y, True)
 	
 	
+	principalDf.plot(x='Id', y='Values', kind='bar')
+	plt.show()
 	
 	cpu_end = process_time()
 	cpu_diff = cpu_end - cpu_start       
