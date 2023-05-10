@@ -5,8 +5,21 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+
 [dependencies]
 cpu-time = "1.0.0"
 csv = "1.2.1"
 statistical = "1.0.0"
 stats = "0.0.1"
+ndarray = "0.15"
+ndarray-linalg = "0.13"
+ndarray-rand = "0.14"
+ndarray-npy = "0.7"
+plotters = "0.3"
+petal-decomposition = "0.6.2"
+linfa = "0.6.1"
+linfa-reduction = "0.6.1"
+linfa-datasets = { version = "0.3.1", features = ["iris"] }
+array2d = "0.3.0"
+
+

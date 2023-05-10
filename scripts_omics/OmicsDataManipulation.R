@@ -6,7 +6,19 @@ library("ggplot2")
 library("ggfortify")
 library("rgl")
 
+write_results <- function(folder, file, df){
+    path <- here(folder, file)
+    write.table(df, path, append = TRUE, quote = FALSE, sep=" ", dec=".",
+            col.names = FALSE, row.names = FALSE)
 
+}
+
+write_output_txt <- function(folder, file, data){
+	path <- here(folder, file)
+	write.table(data, file = path, append = TRUE,
+            row.names = FALSE)
+
+}
 
 calculate_by_row <- function(){
 
@@ -14,12 +26,9 @@ calculate_by_row <- function(){
 	path <- here("scripts_omics/table_counts.tsv")
 	df <- read.csv(file = path, header = FALSE, sep = '\t', row.names = 1, skip=1)
 	for(i in 1:nrow(df)){
-		print("Media")
-		print(mean(matrix(unlist(df[i, ]))))
-		print("Mediana")
-		print(median(matrix(unlist(df[i, ]))))
-		print("Desviacion estandar")
-		print(sd(matrix(unlist(df[i, ]))))
+		write_output_txt("scripts_omics/results", "results_by_row.txt", paste("R mean by row ", toString(mean(matrix(unlist(df[i, ]))))))
+		write_output_txt("scripts_omics/results", "results_by_row.txt", paste("R median by row ", toString(median(matrix(unlist(df[i, ]))))))
+		write_output_txt("scripts_omics/results", "results_by_row.txt", paste("R standard deviation by row ", toString(sd(matrix(unlist(df[i, ]))))))
 	}
 	
 	end_time <- Sys.time()
@@ -34,12 +43,9 @@ calculate_by_column <- function(){
 	path <- here("scripts_omics/table_counts.tsv")
 	df <- read.csv(file = path, header = FALSE, sep = '\t', row.names = 1, skip=1)
 	for(i in 1:ncol(df)){
-		print("Media")
-		print(mean(matrix(unlist(df[i]))))
-		print("Mediana")
-		print(median(matrix(unlist(df[i]))))
-		print("Desviacion estandar")
-		print(sd(matrix(unlist(df[i]))))
+		write_output_txt("scripts_omics/results", "results_by_column.txt", paste("R mean by column ", toString(mean(matrix(unlist(df[i]))))))
+		write_output_txt("scripts_omics/results", "results_by_column.txt", paste("R median by column ", toString(median(matrix(unlist(df[i]))))))
+		write_output_txt("scripts_omics/results", "results_by_column.txt", paste("R standard deviation by column ", toString(sd(matrix(unlist(df[i]))))))
 	}
 	
 	end_time <- Sys.time()
@@ -63,12 +69,9 @@ calculate_for_all_data <- function(){
 		sd_value = sd_value + sd(matrix(unlist(df[i])))
 	}
 	
-	print("Media")
-	print(mean_value)
-	print("Mediana")
-	print(median_value)
-	print("Desviacion estandar")
-	print(sd_value)
+	write_output_txt("scripts_omics/results", "results_all.txt", paste("R mean by column ", toString(mean_value)))
+	write_output_txt("scripts_omics/results", "results_all.txt", paste("R median by column ", toString(median_value)))
+	write_output_txt("scripts_omics/results", "results_all.txt", paste("R standard deviation by column ", toString(sd_value)))
 	
 	end_time <- Sys.time()
     time_taken <- end_time - start_time
@@ -87,6 +90,9 @@ calculate_pca<- function(){
 	#y <- df_divided$'1'
 	
 	pc <- prcomp(df, center = TRUE, scale. = TRUE)
+	
+	write_output_txt("scripts_omics/results", "results_pca.txt", paste("R pca ", toString(pc)))
+	
 	par(mfrow = c(1, 3))
 	p1 <- ggplot(pc, aes(x=row.names(df), y=PC1)) + geom_bar(stat = "identity")
 	p2 <- ggplot(pc, aes(x=row.names(df), y=PC2)) + geom_bar(stat = "identity")
@@ -104,7 +110,34 @@ calculate_pca<- function(){
 
 }
 
-#calculate_by_row()
-#calculate_by_column()
-#calculate_for_all_data()
-calculate_pca()
+
+get_benchmarks <- function(){
+
+	print("Calculando por fila")
+	times_database <- system.time(calculate_by_row())
+	memory_database <- peakRAM(calculate_by_row())
+	df_database <- data.frame('R',  memory_database$Peak_RAM_Used_MiB,  times_database[3], times_database[1])
+	write_results("scripts_omics/results", "results_by_row.csv", df_database)
+	
+	print("Calculando por columna")
+	times_alignment <- system.time(calculate_by_column())
+	memory_alignment <- peakRAM(calculate_by_column())
+	df_alignment <- data.frame('R', memory_alignment$Peak_RAM_Used_MiB, times_alignment[3], times_alignment[1])
+	write_results("scripts_omics/results", "results_by_column.csv", df_alignment)
+
+	print("Calculando para toda la tabla")		
+	times_rev_comp <- system.time(calculate_for_all_data())
+	memory_rev_comp <- peakRAM(calculate_for_all_data())
+	df_rev_comp <- data.frame('R', memory_rev_comp$Peak_RAM_Used_MiB, times_rev_comp[3], times_rev_comp[1])
+	write_results("scripts_omics/results", "results_all.csv", df_rev_comp)
+	
+	print("Obteniendo PCA")
+	times_coordinates <- system.time(calculate_pca())
+	memory_coordinates <- peakRAM(calculate_pca())
+	df_coordinates <- data.frame('R', memory_coordinates$Peak_RAM_Used_MiB, times_coordinates[3], times_coordinates[1])
+	write_results("scripts_omics/results", "results_pca.csv", df_coordinates)
+
+}
+
+
+get_benchmarks()

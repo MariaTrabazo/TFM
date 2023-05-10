@@ -1,0 +1,12 @@
+/home/maria/Documentos/TFM/TFM/scripts_omics/target/debug/deps/crc32fast-d238c3ab04c3d9e8.rmeta: /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/crc32fast-1.3.2/src/lib.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/crc32fast-1.3.2/src/baseline.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/crc32fast-1.3.2/src/combine.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/crc32fast-1.3.2/src/specialized/mod.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/crc32fast-1.3.2/src/table.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/crc32fast-1.3.2/src/specialized/pclmulqdq.rs
+
+/home/maria/Documentos/TFM/TFM/scripts_omics/target/debug/deps/libcrc32fast-d238c3ab04c3d9e8.rlib: /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/crc32fast-1.3.2/src/lib.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/crc32fast-1.3.2/src/baseline.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/crc32fast-1.3.2/src/combine.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/crc32fast-1.3.2/src/specialized/mod.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/crc32fast-1.3.2/src/table.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/crc32fast-1.3.2/src/specialized/pclmulqdq.rs
+
+/home/maria/Documentos/TFM/TFM/scripts_omics/target/debug/deps/crc32fast-d238c3ab04c3d9e8.d: /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/crc32fast-1.3.2/src/lib.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/crc32fast-1.3.2/src/baseline.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/crc32fast-1.3.2/src/combine.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/crc32fast-1.3.2/src/specialized/mod.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/crc32fast-1.3.2/src/table.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/crc32fast-1.3.2/src/specialized/pclmulqdq.rs
+
+/home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/crc32fast-1.3.2/src/lib.rs:
+/home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/crc32fast-1.3.2/src/baseline.rs:
+/home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/crc32fast-1.3.2/src/combine.rs:
+/home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/crc32fast-1.3.2/src/specialized/mod.rs:
+/home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/crc32fast-1.3.2/src/table.rs:
+/home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/crc32fast-1.3.2/src/specialized/pclmulqdq.rs:

@@ -16,7 +16,40 @@ from sklearn.datasets import load_iris
 from sklearn import preprocessing
 from sklearn import utils
 import matplotlib.pyplot as plt
+import os
+import tracemalloc
 
+
+def write_results(data, file):
+	path = str(pathlib.Path(__file__).parent.resolve()) + "/results/" + file
+
+	header = ['language', 'memory(MiB)', 'time(s)', 'CPU_time(s)']
+	mode = 'a'
+	if os.path.exists(path):
+		mode = 'a'
+	else:
+		mode = 'x'
+		
+	
+	with open(path, mode) as f:
+		writer = csv.writer(f, delimiter= ' ')
+		writer.writerow(header)
+		writer.writerow(data)
+		
+		
+def write_output_txt(data, file):
+	path = str(pathlib.Path(__file__).parent.resolve()) + "/results/" + file
+	
+	mode = 'a'
+	if os.path.exists(path):
+		mode = 'a'
+	else:
+		mode = 'x'
+		
+	
+	with open(path, mode) as f:
+		f.write(data)
+		f.close()
 
 def calculate_by_row():
 	
@@ -31,17 +64,15 @@ def calculate_by_row():
 			list_rows = row
 			del list_rows[0]
 			list_values = list(map(float, list_rows))
-			print("Media")
-			print(np.mean(list_values))
-			print("Mediana")
-			print(np.median(list_values))
-			print("Desviacion estandar")
-			print(np.std(list_values))
+			write_output_txt("Python mean by row " + str(np.mean(list_values)) + "\n", "results_by_row.txt")
+			write_output_txt("Python median by row " + str(np.median(list_values)) + "\n", "results_by_row.txt")
+			write_output_txt("Python standard deviation by row " + str(np.std(list_values)) + "\n", "results_by_row.txt")
 	
 	cpu_end = process_time()
 	cpu_diff = cpu_end - cpu_start       
 	end = time.time()
 	results = [end-start, cpu_diff]
+	return results
 	
 
 def calculate_by_column():
@@ -69,18 +100,16 @@ def calculate_by_column():
 	column9_float = list(map(float,columns['WholeOvary_Ctrl_Mid_3']))
 	list_columns = [column1_float, column2_float, column3_float, column4_float, column5_float, column6_float, column7_float, column8_float, column9_float]
 	for col in list_columns:
-		print("Media")
-		print(np.mean(col))
-		print("Mediana")
-		print(np.median(col))
-		print("Desviacion estandar")
-		print(np.std(col))
+		write_output_txt("Python mean by column " + str(np.mean(col)) + "\n", "results_by_column.txt")
+		write_output_txt("Python median by column " + str(np.median(col)) + "\n", "results_by_column.txt")
+		write_output_txt("Python standard deviation by column " + str(np.std(col)) + "\n", "results_by_column.txt")
 		
 		
 	cpu_end = process_time()
 	cpu_diff = cpu_end - cpu_start       
 	end = time.time()
 	results = [end-start, cpu_diff]
+	return results
 
 def calculate_for_all_data():
 	
@@ -102,18 +131,16 @@ def calculate_for_all_data():
 			median = median + np.median(list_values)
 			std = std+ np.std(list_values)
 	
-	print("Media")
-	print(mean)
-	print("Mediana")
-	print(median)
-	print("Desviacion estandar")
-	print(std)
+	write_output_txt("Python mean all " + str(mean) + "\n", "results_all.txt")
+	write_output_txt("Python median all " + str(median) + "\n", "results_all.txt")
+	write_output_txt("Python standard deviation all " + str(std) + "\n", "results_all.txt")
 	
 	
 	cpu_end = process_time()
 	cpu_diff = cpu_end - cpu_start       
 	end = time.time()
 	results = [end-start, cpu_diff]
+	return results
 	
 def calculate_pca():
 	
@@ -134,6 +161,7 @@ def calculate_pca():
 	principalDf = pandas.DataFrame(data = principalComponents, columns=['Values'])
 	principalDf.insert(0, "Id", y, True)
 	
+	write_output_txt("Python pca" + str(principalComponents) + "\n", "results_pca.txt")
 	
 	principalDf.plot(x='Id', y='Values', kind='bar')
 	plt.show()
@@ -142,11 +170,56 @@ def calculate_pca():
 	cpu_diff = cpu_end - cpu_start       
 	end = time.time()
 	results = [end-start, cpu_diff]
+	return results
 
 
 			
-#calculate_by_row()
-#calculate_by_column()
-#calculate_for_all_data()
-calculate_pca()
+
+def get_benchmarks():
+
+	print("Calculando por fila\n")
+	results_database = calculate_by_row()
+	tracemalloc.start()
+	calculate_by_row()
+	memory_database = (tracemalloc.get_traced_memory()[1] / 1024)*0.000976563
+	tracemalloc.stop()
+	data = ['Python', memory_database, results_database[0], results_database[1]]
+	write_results(data, 'results_by_row.csv')
+	
+	print("Calculando por columna\n")	
+	results_alignment = calculate_by_column()
+	tracemalloc.start()
+	calculate_by_column()
+	memory_alignment = (tracemalloc.get_traced_memory()[1] / 1024)*0.000976563
+	tracemalloc.stop()
+	data = ['Python', memory_alignment, results_alignment[0], results_alignment[1]]
+	write_results(data, 'results_by_column.csv')
+	
+	
+
+	print("Calculando para toda la tabla\n")	
+	results_rev_comp = calculate_for_all_data()
+	tracemalloc.start()
+	calculate_for_all_data()
+	memory_rev_comp = (tracemalloc.get_traced_memory()[1] / 1024)*0.000976563
+	tracemalloc.stop()
+	data = ['Python', memory_rev_comp, results_rev_comp[0], results_rev_comp[1]]
+	write_results(data, 'results_all.csv')
+	
+
+	print("Obteniendo PCA\n")	
+	results_coordinates = calculate_pca()
+	tracemalloc.start()
+	calculate_pca()
+	memory_coordinates = (tracemalloc.get_traced_memory()[1] / 1024)*0.000976563
+	tracemalloc.stop()
+	data = ['Python', memory_coordinates, results_coordinates[0], results_coordinates[1]]
+	write_results(data, 'results_pca.csv')
+	
+
+	
+
+
+
+get_benchmarks()
 	
