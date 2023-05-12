@@ -4,10 +4,10 @@ using GenomicAnnotations
 using DataFrames
 using StatsBase
 using MultivariateStats
-using PlotlyJS
 using RDatasets
 using CPUTime
 using BenchmarkTools 
+using Plots
 
 
 function write_results(data, file)
@@ -90,17 +90,14 @@ function calculate_pca()
 	path = dirname(Base.source_path()) * "/E-GEOD-22954.csv"
 	df = CSV.read(path, DataFrame)
 	
+	matrix = Array(df[:, 2:end])'
 	
-	x = Matrix(df[2:floor(Int, nrow(df)/2), 2:end])'
-	y = Matrix(df[floor(Int, nrow(df)/2)+1:end, 2:end])'
+	M = fit(PCA, matrix; maxoutdim=2)
+	Yte = predict(M, matrix)
 	
-	
-	M = fit(PCA, y; maxoutdim=2)
-	Yte = predict(M, x)
-
-	
-	display(plot(Yte, kind="bar"))
-	#p=scatter(Yte, marker=:circle, linewidth=0)
+	h = scatter!(Yte[1,:], Yte[2,:], label="")
+	plot!(xlabel="PC1", ylabel="PC2", framestyle=:box)
+	savefig(h, "results/julia_plot.png")
 	
 	write_output_txt("\nJulia pca " *string(Yte)*"\n", "results_pca.txt")
 	
@@ -143,6 +140,5 @@ function get_benchmarks()
    
     
 end
-
 
 get_benchmarks()

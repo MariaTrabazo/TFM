@@ -156,15 +156,14 @@ def calculate_pca():
  
 	x = sc.fit_transform(x)
 	
-	pca = PCA(n_components = 1)
+	pca = PCA(n_components = 2)
 	principalComponents = pca.fit_transform(x)
-	principalDf = pandas.DataFrame(data = principalComponents, columns=['Values'])
-	principalDf.insert(0, "Id", y, True)
+	principalDf = pandas.DataFrame(data = principalComponents, columns=['PC1', 'PC2'])
+	write_output_txt("Python pca" + str(principalDf) + "\n", "results_pca.txt")
 	
-	write_output_txt("Python pca" + str(principalComponents) + "\n", "results_pca.txt")
 	
-	principalDf.plot(x='Id', y='Values', kind='bar')
-	plt.show()
+	plt.scatter(data=principalDf, x="PC1", y="PC2")
+	plt.savefig('results/python_plot.png')
 	
 	cpu_end = process_time()
 	cpu_diff = cpu_end - cpu_start       
@@ -217,9 +216,6 @@ def get_benchmarks():
 	write_results(data, 'results_pca.csv')
 	
 
-	
-
 
 
 get_benchmarks()
-	

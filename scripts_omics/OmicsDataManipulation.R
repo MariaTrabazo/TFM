@@ -85,25 +85,21 @@ calculate_pca<- function(){
 	path <- here("scripts_omics/E-GEOD-22954.csv") # https://www.ebi.ac.uk/biostudies/arrayexpress/studies/E-GEOD-22954
 	df <- read.csv(file = path, header = FALSE, sep = ',', row.names = 1, skip=1)
 	
-	#df_divided <- split(df, factor(sort(rank(row.names(df))%%2)))
-	#x <- df_divided$'0'
-	#y <- df_divided$'1'
+	col2_1 <- df[1:20,2]
+	col2_2 <- df[21:40,2]
+	col1 <- c(df[,1], col2_1)
+	col3 <- c(col2_2, df[,3])
 	
-	pc <- prcomp(df, center = TRUE, scale. = TRUE)
+	df2 <- data.frame(col1, col3)
 	
+	pc <- prcomp(df2, center = TRUE, scale. = TRUE)	
+	png("results/r_plot.png")
+	myplot <- autoplot(pc, colour="blue")
+	print(myplot)
+	dev.off()
+		
 	write_output_txt("scripts_omics/results", "results_pca.txt", paste("R pca ", toString(pc)))
-	
-	par(mfrow = c(1, 3))
-	p1 <- ggplot(pc, aes(x=row.names(df), y=PC1)) + geom_bar(stat = "identity")
-	p2 <- ggplot(pc, aes(x=row.names(df), y=PC2)) + geom_bar(stat = "identity")
-	p3 <- ggplot(pc, aes(x=row.names(df), y=PC3)) + geom_bar(stat = "identity")
-	X11()
-	plot(p1)
-	plot(p2)
-	plot(p3)
-	while(!is.null(dev.list())) Sys.sleep(1)
-	
-	
+
 	
 	end_time <- Sys.time()
     time_taken <- end_time - start_time
