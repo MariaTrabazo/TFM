@@ -18,6 +18,7 @@ from sklearn import utils
 import matplotlib.pyplot as plt
 import os
 import tracemalloc
+from scipy.stats import ttest_ind
 
 
 def write_results(data, file):
@@ -171,8 +172,40 @@ def calculate_pca():
 	results = [end-start, cpu_diff]
 	return results
 
+def calculate_ttest():
+	start = time.time()
+	cpu_start = process_time()
+	
+	path = str(pathlib.Path(__file__).parent.resolve()) + "/table_counts.tsv"
+	columns = defaultdict(list)
+	with open(path) as f:
+		reader = csv.DictReader(f, delimiter='\t') 
+		for row in reader:
+			for (k,v) in row.items(): 
+				columns[k].append(v) 
+		
+	
+	column1_float = list(map(float,columns['WholeOvary_Ctrl_Early_1']))
+	column2_float = list(map(float,columns['WholeOvary_Ctrl_Early_2']))
+	column3_float = list(map(float,columns['WholeOvary_Ctrl_Early_3']))
+	column4_float = list(map(float,columns['WholeOvary_Ctrl_Late_1']))
+	column5_float = list(map(float,columns['WholeOvary_Ctrl_Late_2']))
+	column6_float = list(map(float,columns['WholeOvary_Ctrl_Late_3']))
+	
+	list_early = column1_float + column2_float + column3_float
+	list_late = column4_float + column5_float + column6_float
+	
+	t_stat, p_value = ttest_ind(list_early, list_late)
+	
+	
+	write_output_txt("Python t test" + str(p_value) + "\n", "results_ttest.txt")
+	
+	cpu_end = process_time()
+	cpu_diff = cpu_end - cpu_start       
+	end = time.time()
+	results = [end-start, cpu_diff]
+	return results
 
-			
 
 def get_benchmarks():
 
@@ -214,6 +247,15 @@ def get_benchmarks():
 	tracemalloc.stop()
 	data = ['Python', memory_coordinates, results_coordinates[0], results_coordinates[1]]
 	write_results(data, 'results_pca.csv')
+	
+	print("Calculando t test\n")	
+	results_ttest = calculate_ttest()
+	tracemalloc.start()
+	calculate_ttest()
+	memory_ttest = (tracemalloc.get_traced_memory()[1] / 1024)*0.000976563
+	tracemalloc.stop()
+	data = ['Python', memory_ttest, results_ttest[0], results_ttest[1]]
+	write_results(data, 'results_ttest.csv')
 	
 
 

@@ -106,6 +106,25 @@ calculate_pca<- function(){
 
 }
 
+calculate_ttest<- function(){
+
+	start_time <- Sys.time()
+	path <- here("scripts_omics/table_counts.tsv")
+	df <- read.csv(file = path, header = FALSE, sep = '\t', row.names = 1, skip=1)
+	list_early <- c(df[,1], df[,2], df[,3])
+	list_late <- c(df[,4], df[,5], df[,6])
+	
+	ttest <- t.test(list_early, list_late)
+	
+		
+	write_output_txt("scripts_omics/results", "results_ttest.txt", paste("R ttest ", toString(ttest)))
+
+	
+	end_time <- Sys.time()
+    time_taken <- end_time - start_time
+
+}
+
 
 get_benchmarks <- function(){
 
@@ -133,7 +152,12 @@ get_benchmarks <- function(){
 	df_coordinates <- data.frame('R', memory_coordinates$Peak_RAM_Used_MiB, times_coordinates[3], times_coordinates[1])
 	write_results("scripts_omics/results", "results_pca.csv", df_coordinates)
 
-}
+	print("Calculando ttest")
+	times_ttest <- system.time(calculate_ttest())
+	memory_ttest <- peakRAM(calculate_ttest())
+	df_ttest <- data.frame('R', memory_ttest$Peak_RAM_Used_MiB, times_ttest[3], times_ttest[1])
+	write_results("scripts_omics/results", "results_ttest.csv", df_ttest)
 
+}
 
 get_benchmarks()

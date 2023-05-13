@@ -8,6 +8,7 @@ using RDatasets
 using CPUTime
 using BenchmarkTools 
 using Plots
+using HypothesisTests
 
 
 function write_results(data, file)
@@ -106,6 +107,29 @@ function calculate_pca()
 
 end
 
+function calculate_ttest()
+
+	start= time()
+	path = dirname(Base.source_path()) * "/table_counts.tsv"
+	df = CSV.read(path, DataFrame, select=[2,3,4,5,6,7])
+	col1 = df[:, "WholeOvary_Ctrl_Early_1"]
+	col2 = df[:, "WholeOvary_Ctrl_Early_2"]
+	col3 = df[:, "WholeOvary_Ctrl_Early_3"]
+	list_early = vcat(col1, col2, col3)
+	
+	col4 = df[:, "WholeOvary_Ctrl_Late_1"]
+	col5 = df[:, "WholeOvary_Ctrl_Late_2"]
+	col6 = df[:, "WholeOvary_Ctrl_Late_3"]
+	list_late = vcat(col4, col5, col6)
+	ttest = OneSampleTTest(vec(list_early), vec(list_late))
+	
+	write_output_txt("\nJulia ttest " *string(ttest)*"\n", "results_ttest.txt")
+	
+	dt = time() - start
+
+
+end
+
 
 function get_benchmarks()
 
@@ -136,9 +160,16 @@ function get_benchmarks()
     @CPUtime calculate_pca
     df_coordinates = DataFrame(language = ["Julia"], memory = result_bm_coordinates.memory * 0.00000095367431640625, time = time_coordinates, cpu_time = 1)
     write_results(df_coordinates, "results_pca.csv")
+    
+    result_ttest= @benchmark calculate_ttest()
+    time_ttest = calculate_ttest()
+    @CPUtime calculate_ttest
+    df_ttest = DataFrame(language = ["Julia"], memory = result_ttest.memory * 0.00000095367431640625, time = time_ttest, cpu_time = 1)
+    write_results(df_ttest, "results_ttest.csv")
 
    
     
 end
+
 
 get_benchmarks()

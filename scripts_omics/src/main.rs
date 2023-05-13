@@ -22,6 +22,7 @@ use petal_decomposition::Pca;
 use std::fs::OpenOptions;
 use std::io;
 use std::io::Write;
+use statest::ttest::*;
 
 fn main() {
    
@@ -434,6 +435,78 @@ fn calculate_pca() -> Vec<f64> {
     
 }
 
+fn calculate_ttest() -> Vec<f64> {
+
+    let start = Instant::now();
+    let start_cpu = ProcessTime::now();
+  
+    
+    
+    let string_path = &current_dir().unwrap();
+    let mut current_path= PathBuf::new();
+    current_path.push(string_path);
+    current_path.push("table_counts.tsv");
+    
+    let mut reader =  ReaderBuilder::new().delimiter(b'\t').from_path(current_path).unwrap();
+    let mut col1 = vec![];
+    let mut col2 = vec![];
+    let mut col3 = vec![];
+    let mut col4 = vec![];
+    let mut col5 = vec![];
+    let mut col6 = vec![];
+    for result in reader.records() {
+       
+       	let record =result.unwrap();
+       	for i in record.get(1){
+       		col1.push(i.to_string().parse::<f32>().unwrap());
+       	}
+       	for i in record.get(2){
+       		col2.push(i.to_string().parse::<f32>().unwrap());
+       	}
+       	for i in record.get(3){
+       		col3.push(i.to_string().parse::<f32>().unwrap());
+       	}
+       	for i in record.get(4){
+       		col4.push(i.to_string().parse::<f32>().unwrap());
+       	}
+       	for i in record.get(5){
+       		col5.push(i.to_string().parse::<f32>().unwrap());
+       	}
+       	for i in record.get(6){
+       		col6.push(i.to_string().parse::<f32>().unwrap());
+       	}  	
+       
+   }
+	
+	let mut list_early = vec![];
+	list_early.append(&mut col1);
+	list_early.append(&mut col2);
+	list_early.append(&mut col3);
+	
+	let mut list_late = vec![];
+	list_late.append(&mut col4);
+	list_late.append(&mut col5);
+	list_late.append(&mut col6);
+	
+	
+    let ttest_early = list_early.ttest1(102.0, 0.05, Side::One(UPLO::Upper)); 
+    let ttest_late = list_late.ttest1(102.0, 0.05, Side::One(UPLO::Upper)); 
+   
+   	write_output_txt("\nRust ttest early: \n", "results_ttest.txt");
+   	write_output_txt(&ttest_early.to_string(), "results_ttest.txt");
+	write_output_txt("\nRust ttest late: \n", "results_ttest.txt");
+   	write_output_txt(&ttest_late.to_string(), "results_ttest.txt");
+  
+	let cpu_time: Duration = start_cpu.elapsed();
+    let end = start.elapsed();
+	let mut array= vec![]; 
+	
+	array.push(end.as_secs_f64());
+	array.push(cpu_time.as_secs_f64());
+	return array;
+    
+}
+
 fn get_benchmarks(){
 
 	println!("Calculando por fila\n");
@@ -450,6 +523,11 @@ fn get_benchmarks(){
 	let result_rev_comp = calculate_for_all_data();
 	let data_rev_comp= &result_rev_comp;
 	write_results(data_rev_comp[0], data_rev_comp[1], "results_all.csv");
+	
+	println!("Calculando ttest\n");
+	let result_ttest = calculate_ttest();
+	let data_ttest= &result_ttest;
+	write_results(data_ttest[0], data_ttest[1], "results_ttest.csv");
     
     
 }

@@ -1,0 +1,13 @@
+/home/maria/Documentos/TFM/TFM/scripts_omics/target/debug/deps/statest-2d9da76fcbdd182a.rmeta: /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/statest-0.2.2/src/lib.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/statest-0.2.2/src/cast.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/statest-0.2.2/src/chi2.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/statest-0.2.2/src/ks.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/statest-0.2.2/src/normal.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/statest-0.2.2/src/numerical.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/statest-0.2.2/src/ttest.rs
+
+/home/maria/Documentos/TFM/TFM/scripts_omics/target/debug/deps/libstatest-2d9da76fcbdd182a.rlib: /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/statest-0.2.2/src/lib.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/statest-0.2.2/src/cast.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/statest-0.2.2/src/chi2.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/statest-0.2.2/src/ks.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/statest-0.2.2/src/normal.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/statest-0.2.2/src/numerical.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/statest-0.2.2/src/ttest.rs
+
+/home/maria/Documentos/TFM/TFM/scripts_omics/target/debug/deps/statest-2d9da76fcbdd182a.d: /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/statest-0.2.2/src/lib.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/statest-0.2.2/src/cast.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/statest-0.2.2/src/chi2.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/statest-0.2.2/src/ks.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/statest-0.2.2/src/normal.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/statest-0.2.2/src/numerical.rs /home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/statest-0.2.2/src/ttest.rs
+
+/home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/statest-0.2.2/src/lib.rs:
+/home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/statest-0.2.2/src/cast.rs:
+/home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/statest-0.2.2/src/chi2.rs:
+/home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/statest-0.2.2/src/ks.rs:
+/home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/statest-0.2.2/src/normal.rs:
+/home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/statest-0.2.2/src/numerical.rs:
+/home/maria/.cargo/registry/src/github.com-1ecc6299db9ec823/statest-0.2.2/src/ttest.rs:
