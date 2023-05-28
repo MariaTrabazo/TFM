@@ -25,7 +25,7 @@ df = pd.read_csv(path4, delimiter= ' ')
 df.at[3, 'CPU_time(s)'] = time_values[2]
 df.to_csv(path4, index=False, sep= ' ')
 
-path5 = str(pathlib.Path(__file__).parent.resolve()) + "/results/results_pca.csv"
+path5 = str(pathlib.Path(__file__).parent.resolve()) + "/results/results_ttest.csv"
 df = pd.read_csv(path5, delimiter= ' ')
 df.at[3, 'CPU_time(s)'] = time_values[3]
 df.to_csv(path5, index=False, sep= ' ')

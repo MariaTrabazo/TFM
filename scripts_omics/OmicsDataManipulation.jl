@@ -85,27 +85,7 @@ function calculate_by_row()
 
 end
 
-function calculate_pca()
 
-	start= time()
-	path = dirname(Base.source_path()) * "/E-GEOD-22954.csv"
-	df = CSV.read(path, DataFrame)
-	
-	matrix = Array(df[:, 2:end])'
-	
-	M = fit(PCA, matrix; maxoutdim=2)
-	Yte = predict(M, matrix)
-	
-	h = scatter!(Yte[1,:], Yte[2,:], label="")
-	plot!(xlabel="PC1", ylabel="PC2", framestyle=:box)
-	savefig(h, "results/julia_plot.png")
-	
-	write_output_txt("\nJulia pca " *string(Yte)*"\n", "results_pca.txt")
-	
-	dt = time() - start
-
-
-end
 
 function calculate_ttest()
 
@@ -155,12 +135,6 @@ function get_benchmarks()
     write_results(df_rev_comp, "results_all.csv")
 
     
-    result_bm_coordinates= @benchmark calculate_pca()
-    time_coordinates = calculate_pca()
-    @CPUtime calculate_pca
-    df_coordinates = DataFrame(language = ["Julia"], memory = result_bm_coordinates.memory * 0.00000095367431640625, time = time_coordinates, cpu_time = 1)
-    write_results(df_coordinates, "results_pca.csv")
-    
     result_ttest= @benchmark calculate_ttest()
     time_ttest = calculate_ttest()
     @CPUtime calculate_ttest
@@ -170,6 +144,5 @@ function get_benchmarks()
    
     
 end
-
 
 get_benchmarks()

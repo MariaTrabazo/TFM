@@ -79,32 +79,8 @@ calculate_for_all_data <- function(){
 
 }
 
-calculate_pca<- function(){
 
-	start_time <- Sys.time()
-	path <- here("scripts_omics/E-GEOD-22954.csv") # https://www.ebi.ac.uk/biostudies/arrayexpress/studies/E-GEOD-22954
-	df <- read.csv(file = path, header = FALSE, sep = ',', row.names = 1, skip=1)
-	
-	col2_1 <- df[1:20,2]
-	col2_2 <- df[21:40,2]
-	col1 <- c(df[,1], col2_1)
-	col3 <- c(col2_2, df[,3])
-	
-	df2 <- data.frame(col1, col3)
-	
-	pc <- prcomp(df2, center = TRUE, scale. = TRUE)	
-	png("results/r_plot.png")
-	myplot <- autoplot(pc, colour="blue")
-	print(myplot)
-	dev.off()
-		
-	write_output_txt("scripts_omics/results", "results_pca.txt", paste("R pca ", toString(pc)))
 
-	
-	end_time <- Sys.time()
-    time_taken <- end_time - start_time
-
-}
 
 calculate_ttest<- function(){
 
@@ -145,12 +121,6 @@ get_benchmarks <- function(){
 	memory_rev_comp <- peakRAM(calculate_for_all_data())
 	df_rev_comp <- data.frame('R', memory_rev_comp$Peak_RAM_Used_MiB, times_rev_comp[3], times_rev_comp[1])
 	write_results("scripts_omics/results", "results_all.csv", df_rev_comp)
-	
-	print("Obteniendo PCA")
-	times_coordinates <- system.time(calculate_pca())
-	memory_coordinates <- peakRAM(calculate_pca())
-	df_coordinates <- data.frame('R', memory_coordinates$Peak_RAM_Used_MiB, times_coordinates[3], times_coordinates[1])
-	write_results("scripts_omics/results", "results_pca.csv", df_coordinates)
 
 	print("Calculando ttest")
 	times_ttest <- system.time(calculate_ttest())
@@ -160,4 +130,5 @@ get_benchmarks <- function(){
 
 }
 
-get_benchmarks()
+calculate_pca_2()
+#get_benchmarks()

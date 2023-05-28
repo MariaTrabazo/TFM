@@ -1,5 +1,5 @@
 [package]
-name = "scripts_omics"
+name = "scripts_machine_learning"
 version = "0.1.0"
 edition = "2021"
 
@@ -11,8 +11,8 @@ cpu-time = "1.0.0"
 csv = "1.2.1"
 statistical = "1.0.0"
 stats = "0.0.1"
-ndarray = "0.14"
-ndarray-linalg = { version = "0.13", features = ["openblas-static"] }
+ndarray = "0.15"
+ndarray-linalg = "0.16.0"
 ndarray-rand = "0.14"
 ndarray-npy = "0.7"
 plotters = "0.3"
@@ -22,5 +22,9 @@ linfa-reduction = "0.6.1"
 linfa-datasets = { version = "0.3.1", features = ["iris"] }
 array2d = "0.3.0"
 statest = "0.2.2"
-
+linregress = "0.5.1"
+linreg = "0.2.0"
+linear-regression = "0.1.0"
+vecshard = "0.2.1"
+simple-stopwatch="0.1.4"
 

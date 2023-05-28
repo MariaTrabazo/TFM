@@ -143,34 +143,7 @@ def calculate_for_all_data():
 	results = [end-start, cpu_diff]
 	return results
 	
-def calculate_pca():
-	
-	start = time.time()
-	cpu_start = process_time()
-	
-	path = str(pathlib.Path(__file__).parent.resolve()) + "/E-GEOD-22954.csv"
-	df = pandas.read_csv(path, delimiter = ',')
-	x = df.iloc[:, 1:len(df.columns)].values
-	y = df.iloc[:, 0].values 
-	
-	sc = StandardScaler()
- 
-	x = sc.fit_transform(x)
-	
-	pca = PCA(n_components = 2)
-	principalComponents = pca.fit_transform(x)
-	principalDf = pandas.DataFrame(data = principalComponents, columns=['PC1', 'PC2'])
-	write_output_txt("Python pca" + str(principalDf) + "\n", "results_pca.txt")
-	
-	
-	plt.scatter(data=principalDf, x="PC1", y="PC2")
-	plt.savefig('results/python_plot.png')
-	
-	cpu_end = process_time()
-	cpu_diff = cpu_end - cpu_start       
-	end = time.time()
-	results = [end-start, cpu_diff]
-	return results
+
 
 def calculate_ttest():
 	start = time.time()
@@ -239,14 +212,7 @@ def get_benchmarks():
 	write_results(data, 'results_all.csv')
 	
 
-	print("Obteniendo PCA\n")	
-	results_coordinates = calculate_pca()
-	tracemalloc.start()
-	calculate_pca()
-	memory_coordinates = (tracemalloc.get_traced_memory()[1] / 1024)*0.000976563
-	tracemalloc.stop()
-	data = ['Python', memory_coordinates, results_coordinates[0], results_coordinates[1]]
-	write_results(data, 'results_pca.csv')
+	
 	
 	print("Calculando t test\n")	
 	results_ttest = calculate_ttest()
@@ -257,7 +223,6 @@ def get_benchmarks():
 	data = ['Python', memory_ttest, results_ttest[0], results_ttest[1]]
 	write_results(data, 'results_ttest.csv')
 	
-
 
 
 get_benchmarks()

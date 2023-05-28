@@ -10,19 +10,26 @@ use csv::ReaderBuilder;
 use statistical::mean;
 use statistical::median;
 use statistical::standard_deviation;
-use ndarray::{Array2, ArrayView2};
 use plotters::prelude::*;
 use std::fs::File;
 use std::env;
 use array2d::Array2D;
 use linfa::traits::{Fit, Predict};
-//use linfa_reduction::Pca;
 use ndarray::arr2;
-use petal_decomposition::Pca;
 use std::fs::OpenOptions;
 use std::io;
 use std::io::Write;
 use statest::ttest::*;
+
+extern crate ndarray;
+extern crate ndarray_linalg;
+extern crate ndarray_rand;
+
+use ndarray::{Array, Array2, Axis, stack};
+use ndarray_linalg::{Eigh};
+use crate::ndarray_linalg::Eig;
+use ndarray_rand::rand::Rng;
+
 
 fn main() {
    
@@ -378,62 +385,7 @@ fn calculate_for_all_data() -> Vec<f64>{
 }
 
 
-fn calculate_pca() -> Vec<f64> {
 
-    let start = Instant::now();
-    let start_cpu = ProcessTime::now();
-  
-    
-    let string_path = &current_dir().unwrap();
-    let mut current_path= PathBuf::new();
-    current_path.push(string_path);
-    current_path.push("E-GEOD-22954.csv");
-    
-    let mut reader =  ReaderBuilder::new().delimiter(b',').from_path(current_path).unwrap();
-    let mut col1 = vec![];
-    let mut col2 = vec![];
-    let mut col3 = vec![];
-    
-    for result in reader.records() {
-       
-       	let record =result.unwrap();
-       	for i in record.get(1){
-       		col1.push(i.to_string().parse::<f32>().unwrap());
-       	}
-       	for i in record.get(2){
-       		col2.push(i.to_string().parse::<f32>().unwrap());
-       	}
-       	for i in record.get(3){
-       		col3.push(i.to_string().parse::<f32>().unwrap());
-       	}
-
-      	
-       
-   }
-   
-   
-    let rows = vec![col1, col2, col3];
-    let df = Array2D::from_rows(&rows);
-    
-
-	/*let x = arr2(&[[0_f64, 0_f64], [1_f64, 1_f64], [2_f64, 2_f64]]);
-	let mut pca = PcaBuilder::new(2).build(); // Keep two dimensions.
-	pca.fit(&x).unwrap();*/
-    
-
-
-   
-  
-	let cpu_time: Duration = start_cpu.elapsed();
-    let end = start.elapsed();
-	let mut array= vec![]; 
-	
-	array.push(end.as_secs_f64());
-	array.push(cpu_time.as_secs_f64());
-	//Ok(array);
-	return array;
-    
-}
 
 fn calculate_ttest() -> Vec<f64> {
 

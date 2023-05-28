@@ -1,2 +1,25 @@
 
 scripts_machine_learning/table_counts.tsv
+*.csv
+*.o
+*.bin
+*.lock
+*.rmeta
+*.d
+*.txt
+*.c
+*.S
+*.f
+*.cmake
+scripts_omics/target/debug/build/openblas-src-a5e854044e1cf7ad/out/lapack/lauum/Makefile
+scripts_omics/target/debug/build/openblas-src-a5e854044e1cf7ad/out/LICENSE
+*.win64
+*.64bit
+*.32bit
+*.win32
+*.md
+*.h
+scripts_machine_learning/target/debug/.fingerprint/anyhow-c7363b9e61ef3fd0/build-script-build-script-build
+*.json
+*.timestamp
+scripts_machine_learning/target/debug/.fingerprint/bzip2-sys-77e5d744e6bc2d38/run-build-script-build-script-build
