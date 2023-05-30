@@ -466,7 +466,7 @@ fn get_benchmarks(){
 	let data_database= &result_database;
 	write_results(data_database[0], data_database[1], "results_by_row.csv");
 
-	println!("Calculando por colulando\n");
+	println!("Calculando por columna\n");
     let result_alignment = calculate_by_column();
     let data_alignment= &result_alignment;
 	write_results(data_alignment[0], data_alignment[1], "results_by_column.csv");

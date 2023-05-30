@@ -130,5 +130,4 @@ get_benchmarks <- function(){
 
 }
 
-calculate_pca_2()
-#get_benchmarks()
+get_benchmarks()

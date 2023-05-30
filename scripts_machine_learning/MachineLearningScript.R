@@ -59,7 +59,7 @@ linear_regression <- function(){
 calculate_pca<- function(){
 
 	start_time <- Sys.time()
-	path <- here("scripts_omics/E-GEOD-22954.csv") # https://www.ebi.ac.uk/biostudies/arrayexpress/studies/E-GEOD-22954
+	path <- here("scripts_machine_learning/E-GEOD-22954.csv") # https://www.ebi.ac.uk/biostudies/arrayexpress/studies/E-GEOD-22954
 	df <- read.csv(file = path, header = FALSE, sep = ',', row.names = 1, skip=1)
 	
 	
@@ -71,7 +71,7 @@ calculate_pca<- function(){
 	principalComponents <- pca$x
 	principalDf <- data.frame(PC1 = principalComponents[, 1], PC2 = principalComponents[, 2])
 		
-	write_output_txt("scripts_omics/results", "results_pca.txt", paste("R pca ", toString(pca)))
+	write_output_txt("scripts_machine_learning/results", "results_pca.txt", paste("R pca ", toString(pca)))
 
 	
 	plot <- ggplot(principalDf, aes(x = PC1, y = PC2)) + geom_point()

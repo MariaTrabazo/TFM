@@ -9,8 +9,12 @@ using Plots
 using HypothesisTests
 using Statistics
 using GLM
-using Flux, MLDatasets, CUDA
+using Flux, CUDA
 using Flux: train!, onehotbatch
+using Images
+using Flux.Data.MNIST
+     
+
 
 
 
@@ -98,28 +102,56 @@ function loss(model, x, y)
 	return Flux.crossentropy(model(x),Flux.onehotbatch(y,0:9))
 end
 
+
+
+function create_batch(r, images, labels)
+    xs = [vec(Float64.(img)) for img in images[r]]
+    ys = [Flux.onehot(labels, 0:9) for labels in labels[r]]
+    return (Flux.batch(xs), Flux.batch(ys))
+end
+     
+
+
 function recognise_numbers()
 	
 	start= time()
 	
+	#=
+	IMPLAMENTACION 1
 	
+	images = MNIST.images();
+	labels = MNIST.labels();
+	n_inputs = unique(length.(images))[]
+	n_outputs = length(unique(labels))
+	
+	trainbatch = create_batch(1:5000, images, labels)
+	model = Chain(Dense(n_inputs, n_outputs, identity), softmax)
+    loss(x,y) = Flux.crossentropy(model(x),y)
+    opt = ADAM()
+    
+    for i in 1:10
+		Flux.train!(loss, Flux.params(model), [trainbatch], opt)
+	end
+    =#
+
+     #=
+     IMPLEMENTACION 2
+     
 	x_train, y_train = MLDatasets.MNIST.traindata()
 	x_test, y_test = MLDatasets.MNIST.testdata()
 	x_train = Float32.(x_train)
 	y_train = Flux.onehotbatch(y_train, 0:9)
 
 
-	model = Chain(
-    Dense(784, 256, relu),
-    Dense(256, 10, relu), softmax
-	)
+	model = Chain(Dense(784, 256, relu),Dense(256, 10, relu), softmax)
 
 	loss(x, y) = Flux.Losses.logitcrossentropy(model(x), y)
 
-	optimizer = ADAM(0.0001)
+	optimizer = ADAM()
 
 	parameters = Flux.params(model)
 	train_data = [(Flux.flatten(x_train), Flux.flatten(y_train))]
+	
 	for i in 1:400
 		Flux.train!(loss, parameters, train_data, optimizer)
 	end
@@ -132,10 +164,7 @@ function recognise_numbers()
 		end
 	end
 	println(accuracy / length(y_test))
-
-
-	
-	
+    =#
 	
 	dt = time() - start
 
@@ -164,4 +193,5 @@ function get_benchmarks()
 end
 
 
-get_benchmarks()
+recognise_numbers()
+#get_benchmarks()

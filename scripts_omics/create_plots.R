@@ -1,6 +1,4 @@
 library("ggplot2")
-library("tibble")
-
 
 
 
@@ -65,12 +63,6 @@ ggsave("/home/maria/Documentos/TFM/TFM/scripts_omics/imagenes/ttest_cpu_time.png
 
 ttest_time <- ggplot(ttest_data, aes(y=time.s., x=language, fill=time.s.)) + geom_bar(stat = "identity") + labs(title = "Tiempo de ejecucion de secuencia por coordenadas",  x = "Lenguajes", y = "Tiempo de ejecucion(s)")
 ggsave("/home/maria/Documentos/TFM/TFM/scripts_omics/imagenes/ttest_time.png", ttest_time)
-
-
-
-
-
-
 
 
 
