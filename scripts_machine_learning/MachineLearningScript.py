@@ -21,8 +21,10 @@ import tracemalloc
 from sklearn.linear_model import LinearRegression
 import tensorflow as tf
 from tensorflow import keras
+from sklearn.cluster import KMeans
 
 
+#se escriben los resultados de memoria, tiempo de ejecución y tiempo de CPU
 def write_results(data, file):
 	path = str(pathlib.Path(__file__).parent.resolve()) + "/results/" + file
 
@@ -39,7 +41,8 @@ def write_results(data, file):
 		writer.writerow(header)
 		writer.writerow(data)
 		
-		
+
+#se escriben los resultados de cada una de las funciones		
 def write_output_txt(data, file):
 	path = str(pathlib.Path(__file__).parent.resolve()) + "/results/" + file
 	
@@ -54,6 +57,7 @@ def write_output_txt(data, file):
 		f.write(data)
 		f.close()
 
+#se calcula el modelo de regresion lineal
 def linear_regression():
     
 	start = time.time()
@@ -89,30 +93,37 @@ def linear_regression():
 	end = time.time()
 	results = [end-start, cpu_diff]
 	return results
-	
 
+	
+#analisis de componentes principales
 def calculate_pca():
 	
 	start = time.time()
 	cpu_start = process_time()
 	
-	path = str(pathlib.Path(__file__).parent.resolve()) + "/E-GEOD-22954.csv"
-	df = pandas.read_csv(path, delimiter = ',')
+	path = str(pathlib.Path(__file__).parent.resolve()) + "/table_counts.tsv"
+	df = pandas.read_csv(path, delimiter = '\t')
 	x = df.iloc[:, 1:len(df.columns)].values
 	y = df.iloc[:, 0].values 
-	
-	#sc = StandardScaler()
- 
-	#x = sc.fit_transform(x)
 	
 	pca = PCA(n_components = 2)
 	principalComponents = pca.fit_transform(x)
 	principalDf = pandas.DataFrame(data = principalComponents, columns=['PC1', 'PC2'])
+	
+		
+	k = 3  
+	kmeans = KMeans(n_clusters=k, random_state=42)
+	kmeans.fit(principalComponents)
+
+	cluster_labels = kmeans.labels_  
+	
 	write_output_txt("Python pca" + str(principalDf) + "\n", "results_pca.txt")
 	
 	
-	plt.scatter(data=principalDf, x="PC1", y="PC2")
-	plt.savefig('results/python_plot.png')
+	plt.scatter(principalComponents[:, 0], principalComponents[:, 1], c=cluster_labels)
+	plt.xlabel('PC1')
+	plt.ylabel('PC2')
+	plt.savefig('results/python_plot.pdf')
 	
 	cpu_end = process_time()
 	cpu_diff = cpu_end - cpu_start       
@@ -120,6 +131,7 @@ def calculate_pca():
 	results = [end-start, cpu_diff]
 	return results
 
+#modelo de reconocimientos de numeros a partir de imagenes
 def recognise_numbers():
     
 	start = time.time()
@@ -147,11 +159,9 @@ def recognise_numbers():
 	model.fit(train_x, train_y, epochs=10, batch_size=32)
 	
 	test_loss, test_acc = model.evaluate(test_x, test_y)
-	#print("Test accuracy:", test_acc)
 	
 	predictions = model.predict(test_x)
 	predicted_labels = np.argmax(predictions, axis=1)
-	#print("Predictions:", predicted_labels)
 
 	write_output_txt("Python predictions " + str(predicted_labels) + "\n", "results_handwritten_numbers.txt")
 	write_output_txt("Python accuracy " + str(test_acc) + "\n", "results_handwritten_numbers.txt")
@@ -166,7 +176,7 @@ def recognise_numbers():
 	return results
 
 
-
+#se realiza la llamada secuencial de todas las funciones
 def get_benchmarks():
 
 	print("Calculando regresion lineal\n")
@@ -197,7 +207,4 @@ def get_benchmarks():
 	write_results(data, 'results_handwritten_numbers.csv')
 	
 	
-	
-
-
 get_benchmarks()

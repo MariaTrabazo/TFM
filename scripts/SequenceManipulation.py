@@ -15,14 +15,16 @@ import csv
 import tracemalloc
 import os
 
+#se lee el fichero en formato fasta
 def open_fasta_file(input_file):
 	path = str(pathlib.Path(__file__).parent.resolve()) + "/results/" + input_file
 	sequences = []
-    #se lee el fichero en formato fasta con las secuencias, que se almacenan en la lista sequences
+    
 	for seq_record in SeqIO.parse(path, "fasta"):
 		sequences.append(str(seq_record.seq))
 	return sequences
 
+#se escriben los resultados de memoria, tiempo de ejecución y tiempo de CPU
 def write_results(data, file):
 	path = str(pathlib.Path(__file__).parent.resolve()) + "/results/" + file
 
@@ -39,7 +41,7 @@ def write_results(data, file):
 		writer.writerow(header)
 		writer.writerow(data)
 		
-		
+#se escriben los resultados de cada una de las funciones	
 def write_output_txt(data, file):
 	path = str(pathlib.Path(__file__).parent.resolve()) + "/results/" + file
 	
@@ -54,7 +56,7 @@ def write_output_txt(data, file):
 		f.write(data)
 		f.close()
 	
-	
+#se descargan las secuencias de la base de datos
 def get_sequences_from_database():
 	start = time.time()
 	cpu_start = process_time()
@@ -81,23 +83,20 @@ def get_sequences_from_database():
 	cpu_diff = cpu_end - cpu_start       
 	end = time.time()
 	time_value = "\nGetting sequence from db time: " + str(end-start)
-	#print(time_value)
-	#write_results(time_value, "\n", "results.txt")
 	results = [end-start, cpu_diff]
 	return results
-   
+
+#se realiza el alineamiento de secuencias  
 def align_two_sequences():
 	start = time.time()
 	cpu_start = process_time()
 	list_sequences = open_fasta_file("sequence_list_python.fasta")
-	align = Align.PairwiseAligner() #esta clase representa un alineamiento de secuencias por pares
-	align.mode = 'global' #se indica el tipo de alineamiento, en este caso, global, para encontrar la mejor concordancia entre las dos secuencias completas
-    #se asignan puntuaciones en base a las coincidencias y huecos entre las secuencias
+	align = Align.PairwiseAligner() 
+	align.mode = 'global' 
 	align.match_score = 20 
 	align.mismatch_score = -10
 	align.open_gap_score = -5
 	align.extend_gap_score = -1
-    #se realiza el alineamiento y para cada alineamiento se imprime el resultado y la puntuación calculada
 	alignments=align.align(list_sequences[0], list_sequences[1])
     #for alignment in align.align(list_sequences[0], list_sequences[1]):
         #print(alignment)
@@ -105,8 +104,6 @@ def align_two_sequences():
 	cpu_end = process_time()
 	cpu_diff = cpu_end - cpu_start    
 	end = time.time()
-    #print("Score = %.f " % alignments.score)
-	#print("Alignment time: ", str(end-start)) #se obtiene el tiempo del alineamiento
 	value_time = "\nSequence alignment time: "+ str(end-start)
 	score = "\nPython alignment score: " + str(alignments.score) + "\n"
     
@@ -114,7 +111,7 @@ def align_two_sequences():
 	results = [end-start, cpu_diff]
 	return results
 
-
+#se obtiene la reversa complementaria
 def get_complementary_reverse_sequence():
 	start = time.time()
 	cpu_start = process_time()
@@ -129,7 +126,7 @@ def get_complementary_reverse_sequence():
 	return results
 
 
-
+#se obtienen las secuencias según sus coordenadas
 def get_sequence_from_coordinates():
 	start = time.time()
 	cpu_start = process_time()
@@ -147,6 +144,7 @@ def get_sequence_from_coordinates():
 	results = [end-start, cpu_diff]
 	return results
 
+#se buscan coincidencias de subsecuencias
 def match_subsequence():
 	start = time.time()
 	cpu_start = process_time()
@@ -169,6 +167,7 @@ def match_subsequence():
 	results = [end-start, cpu_diff]
 	return results
 
+#se realiza la llamada secuencial de todas las funciones
 def get_benchmarks():
 
 	print("Obteniendo las secuencias de NCBI\n")

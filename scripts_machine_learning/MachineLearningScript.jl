@@ -13,11 +13,12 @@ using Flux, CUDA
 using Flux: train!, onehotbatch
 using Images
 using Flux.Data.MNIST
+using Clustering
      
 
 
 
-
+#se escriben los resultados de memoria, tiempo de ejecución y tiempo de CPU
 function write_results(data, file)
     path = dirname(Base.source_path()) * "/results/" * file
     open(path, "a") do f
@@ -26,6 +27,7 @@ function write_results(data, file)
     end
 end
 
+#se escriben los resultados de cada una de las funciones
 function write_output_txt(data, file)
     
     path = dirname(Base.source_path()) * "/results/" * file
@@ -35,6 +37,7 @@ function write_output_txt(data, file)
     end
 end
 
+#se calcula el modelo de regresion lineal
 function linear_regression()
 	
 	start= time()
@@ -75,22 +78,30 @@ function linear_regression()
 
 end
 
+#analisis de componentes principales
 function calculate_pca()
 
 	start= time()
-	path = dirname(Base.source_path()) * "/E-GEOD-22954.csv"
+	
+	path = dirname(Base.source_path()) * "/table_counts.tsv"
 	df = CSV.read(path, DataFrame)
 	
-	matrix = Array(df[:, 2:end])'
+	matrix = Array(df[:, 2:end])'	
 	
-	M = fit(PCA, matrix; maxoutdim=2)
-	Yte = predict(M, matrix)
 	
-	h = scatter!(Yte[1,:], Yte[2,:], label="")
-	plot!(xlabel="PC1", ylabel="PC2", framestyle=:box)
-	savefig(h, "results/julia_plot.png")
+	pca_model = fit(PCA, matrix, maxoutdim=2)
+	principalComponents = predict(pca_model, matrix)
+	pca_data = -principalComponents
+	kmeans_clusters = kmeans(pca_data, 3)
 	
-	write_output_txt("\nJulia pca " *string(Yte)*"\n", "results_pca.txt")
+	
+	cluster_labels = assignments(kmeans_clusters)
+
+	
+	scatter(pca_data[1, :], pca_data[2, :], group=cluster_labels, xlabel="PC1", ylabel="PC2", legend=:topright)
+	savefig("results/julia_plot.pdf")
+	
+	write_output_txt("\nJulia pca " *string(pca_data)*"\n", "results_pca.txt")
 	
 	dt = time() - start
 
@@ -111,7 +122,7 @@ function create_batch(r, images, labels)
 end
      
 
-
+#posibles implementaciones para el reconocimiento de numeros
 function recognise_numbers()
 	
 	start= time()
@@ -172,7 +183,7 @@ function recognise_numbers()
 end
 
 
-
+#se realiza la llamada secuencial de todas las funciones
 function get_benchmarks()
 
 
@@ -193,5 +204,4 @@ function get_benchmarks()
 end
 
 
-recognise_numbers()
-#get_benchmarks()
+get_benchmarks()

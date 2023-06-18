@@ -6,8 +6,10 @@ library("ggplot2")
 library("ggfortify")
 library("rgl")
 library("keras")
+library("cluster")
 
 
+#se escriben los resultados de memoria, tiempo de ejecución y tiempo de CPU
 write_results <- function(folder, file, df){
     path <- here(folder, file)
     write.table(df, path, append = TRUE, quote = FALSE, sep=" ", dec=".",
@@ -15,6 +17,7 @@ write_results <- function(folder, file, df){
 
 }
 
+#se escriben los resultados de cada una de las funciones
 write_output_txt <- function(folder, file, data){
 	path <- here(folder, file)
 	write.table(data, file = path, append = TRUE,
@@ -22,6 +25,7 @@ write_output_txt <- function(folder, file, data){
 
 }
 
+#se calcula el modelo de regresion lineal
 linear_regression <- function(){
 
 	start_time <- Sys.time()
@@ -56,34 +60,48 @@ linear_regression <- function(){
 
 }
 
+#analisis de componentes principales
 calculate_pca<- function(){
 
 	start_time <- Sys.time()
-	path <- here("scripts_machine_learning/E-GEOD-22954.csv") # https://www.ebi.ac.uk/biostudies/arrayexpress/studies/E-GEOD-22954
-	df <- read.csv(file = path, header = FALSE, sep = ',', row.names = 1, skip=1)
+	path <- here("scripts_machine_learning/table_counts.tsv") # https://www.ebi.ac.uk/biostudies/arrayexpress/studies/E-GEOD-22954
+	df <- read.csv(file = path, header = FALSE, sep = '\t', row.names = 1, skip=1)
 	
 	
-	x <- df[, 2:ncol(df)]
+	x <- df[, 1:ncol(df)]
 	y <- df[, 1]
-
 	
 	pca <- prcomp(x, rank = min(nrow(x), ncol(x)))
 	principalComponents <- pca$x
-	principalDf <- data.frame(PC1 = principalComponents[, 1], PC2 = principalComponents[, 2])
-		
+	
+	
+	wss <- numeric(9)  
+	for (i in 1:9) {
+	  kmeans_clusters <- kmeans(pca$x[, 1:i], centers = i)
+	  wss[i] <- kmeans_clusters$tot.withinss
+	}
+	
+	pdf("results/elbow_r_plot.pdf")
+	plot<-plot(1:9, wss, type = "b", xlab = "Number of Clusters", ylab = "Within-Cluster Sum of Squares")
+	dev.off()
+	
+	
+	k <- 3 
+	kmeans_clusters <- kmeans(pca$x[, 1:k], centers = k) 
+	kmeans_clusters$cluster  
+	pdf("results/r_plot.pdf")
+	plot(pca$x[, 1], pca$x[, 2], col = kmeans_clusters$cluster, pch = 19, xlab = "PC1", ylab = "PC2")
+	dev.off()
+
 	write_output_txt("scripts_machine_learning/results", "results_pca.txt", paste("R pca ", toString(pca)))
 
-	
-	plot <- ggplot(principalDf, aes(x = PC1, y = PC2)) + geom_point()
-	png("results/r_plot.png")
-	print(plot)
-	dev.off()
 	
 	end_time <- Sys.time()
     time_taken <- end_time - start_time
 
 }
 
+#modelo de reconocimientos de numeros a partir de imagenes
 recognise_numbers <- function(){
 
 	start_time <- Sys.time()
@@ -119,7 +137,7 @@ recognise_numbers <- function(){
 	  metrics = c('accuracy')
 	)
 
-	# Train the model
+	
 	history <- model %>% fit(
 	  train_x, train_y,
 	  epochs = 10,
@@ -129,13 +147,10 @@ recognise_numbers <- function(){
 
 	
 	scores <- model %>% evaluate(test_x, test_y)
-	#cat("Test loss:", scores[[1]], "\n")
-	#cat("Test accuracy:", scores[[2]], "\n")
 
 	
 	predictions <- model %>% predict(test_x)
 	predicted_labels <- apply(predictions, 1, which.max)
-	#cat("Predicted labels:", predicted_labels, "\n")
 	write_output_txt("scripts_machine_learning/results", "results_handwritten_numbers.txt", paste("R predictions ", toString(predicted_labels)))
 	write_output_txt("scripts_machine_learning/results", "results_handwritten_numbers.txt", paste("R accuracy ", toString(scores[[2]])))
 
@@ -148,7 +163,7 @@ recognise_numbers <- function(){
 
 }
 
-
+#se realiza la llamada secuencial de todas las funciones
 get_benchmarks <- function(){
 
 	print("Calculando regresion lineal")
@@ -172,6 +187,7 @@ get_benchmarks <- function(){
 	
 
 }
+
 
 
 get_benchmarks()

@@ -10,8 +10,8 @@ using DataFrames
 using CSV
 using CPUTime
 
-#https://github.com/BioJulia/BioAlignments.jl/blob/master/docs/src/pairalign.md
 
+#se lee el fichero en formato fasta
 function read_fasta(input_file)
     path = dirname(Base.source_path()) * input_file
     sequence_list = String[]
@@ -23,6 +23,7 @@ function read_fasta(input_file)
     return sequence_list
 end
 
+#se escriben los resultados de memoria, tiempo de ejecución y tiempo de CPU
 function write_results(data, file)
     path = dirname(Base.source_path()) * "/results/" * file
     open(path, "a") do f
@@ -31,6 +32,7 @@ function write_results(data, file)
     end
 end
 
+#se escriben los resultados de cada una de las funciones
 function write_output_txt(data, file)
     
     path = dirname(Base.source_path()) * "/results/" * file
@@ -40,6 +42,7 @@ function write_output_txt(data, file)
     end
 end
 
+#se descargan las secuencias de la base de datos
 function get_sequences_from_database()
     start= time()
     search_dic = Dict()
@@ -71,19 +74,21 @@ function get_sequences_from_database()
 
 end
 
+#se realiza el alineamiento de secuencias 
 function align_two_sequences()   
     start= time()
     costmodel = AffineGapScoreModel(match=20, mismatch= -10, gap_open=-5, gap_extend=-1);
     list_sequences = String[]
     list_sequences = read_fasta("/results/sequence_list_julia.fasta")
     alignments = pairalign(GlobalAlignment(), getindex(list_sequences, 1), getindex(list_sequences, 2), costmodel)
-    #println(alignments)
+    
     dt = time() - start
     alignment_score = "\nJulia alignment score: " * string(score(alignments)) 
     write_output_txt(alignment_score, "results_alignment.txt")
 	return dt
 end
 
+#se obtiene la reversa complementaria
 function get_complementary_reverse_sequence()
     start= time()
     list_sequences = read_fasta("/results/sequence_list_julia.fasta")
@@ -95,7 +100,7 @@ function get_complementary_reverse_sequence()
 end
 
 
-
+#se obtienen las secuencias según sus coordenadas
 function get_sequence_from_coordinates()
     start= time()
     path = dirname(Base.source_path()) * "/results/sequence_list_julia.fasta"
@@ -112,10 +117,10 @@ function get_sequence_from_coordinates()
         end
     end
     dt = time() - start
-    #write_results(time_value, "\n", "results.txt")
 	return dt
 end
 
+#se buscan coincidencias de subsecuencias
 function match_subsequence()
     start= time()
     list_sequences = read_fasta("/partial_hg38.fa");
@@ -123,7 +128,6 @@ function match_subsequence()
     write_output_txt("\nJulia subsequences matches\n", "results_match.txt")
     for seq_string in list_strings
         matches = 0
-        #print("Sequence: " * seq_string)
         for sequence in list_sequences 
             matches=matches + length(findall(Regex(seq_string), sequence))
             
@@ -134,7 +138,7 @@ function match_subsequence()
 	return dt
 end
 
-
+#se realiza la llamada secuencial de todas las funciones
 function get_benchmarks()
 
 
@@ -148,7 +152,6 @@ function get_benchmarks()
     #print("Realizando el alineamiento\n")
     result_bm_alignment = @benchmark align_two_sequences()
     time_alignment = align_two_sequences()
-    #print(display(cpu_alignment))
     @CPUtime align_two_sequences()
     df_alignment = DataFrame(language = "Julia", memory = result_bm_alignment.memory * 0.00000095367431640625, time = time_alignment, cpu_time = 1)
     write_results(df_alignment, "results_alignment.csv")
@@ -156,7 +159,6 @@ function get_benchmarks()
     #print("Obteniendo la reversa complementaria\n")
     result_bm_rev_comp = @benchmark get_complementary_reverse_sequence()
     time_rev_comp = get_complementary_reverse_sequence()
-    #print(display(result_bm_rev_comp))
     @CPUtime get_complementary_reverse_sequence
     df_rev_comp = DataFrame(language = "Julia", memory = result_bm_rev_comp.memory * 0.00000095367431640625, time = time_rev_comp, cpu_time = 1)
     write_results(df_rev_comp, "results_rev_comp.csv")
@@ -164,7 +166,6 @@ function get_benchmarks()
     #print("Obteniendo secuencias a partir de coordenadas\n")
     result_bm_coordinates= @benchmark get_sequence_from_coordinates()
     time_coordinates = get_sequence_from_coordinates()
-    #print(display(result_bm_coordinates))
     @CPUtime get_sequence_from_coordinates
     df_coordinates = DataFrame(language = ["Julia"], memory = result_bm_coordinates.memory * 0.00000095367431640625, time = time_coordinates, cpu_time = 1)
     write_results(df_coordinates, "results_coordinates.csv")
@@ -172,7 +173,6 @@ function get_benchmarks()
     #print("Buscando el número de coincidencias para tres subsecuencias\n")
     result_bm_match = @benchmark match_subsequence()
     time_match = match_subsequence()
-    #print(display(result_bm_match))
     @CPUtime match_subsequence
     df_match = DataFrame(language = "Julia", memory = result_bm_match.memory * 0.00000095367431640625, time= time_match, cpu_time = 1)
     write_results(df_match, "results_match_subsequence.csv")

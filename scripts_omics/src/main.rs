@@ -36,6 +36,7 @@ fn main() {
    get_benchmarks();
 }
 
+//se escriben los resultados de memoria, tiempo de ejecución y tiempo de CPU
 fn write_results(time: f64, cpu_time: f64, file: &str){
 
     
@@ -64,6 +65,7 @@ fn write_results(time: f64, cpu_time: f64, file: &str){
         //.expect("write failed");
 }
 
+//se escriben los resultados de cada una de las funciones
 fn write_output_txt(data: &str, file: &str){
 
     
@@ -84,6 +86,7 @@ fn write_output_txt(data: &str, file: &str){
     data_file.write(data.as_bytes());
 }
 
+//calculo de estadisticas por fila
 fn calculate_by_row() -> Vec<f64> {
 
     let start = Instant::now();
@@ -138,6 +141,7 @@ fn calculate_by_row() -> Vec<f64> {
     
 }
 
+//calculo de estadísticos por columna
 fn calculate_by_column() -> Vec<f64>{
 
     let start = Instant::now();
@@ -305,6 +309,7 @@ fn calculate_by_column() -> Vec<f64>{
     
 }
 
+//calculo de estadisticos para toda la tabla
 fn calculate_for_all_data() -> Vec<f64>{
 
     let start = Instant::now();
@@ -386,7 +391,7 @@ fn calculate_for_all_data() -> Vec<f64>{
 
 
 
-
+//calculo del t-test
 fn calculate_ttest() -> Vec<f64> {
 
     let start = Instant::now();
@@ -459,6 +464,7 @@ fn calculate_ttest() -> Vec<f64> {
     
 }
 
+//se realiza la llamada secuencial de todas las funciones
 fn get_benchmarks(){
 
 	println!("Calculando por fila\n");

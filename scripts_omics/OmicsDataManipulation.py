@@ -20,7 +20,7 @@ import os
 import tracemalloc
 from scipy.stats import ttest_ind
 
-
+#se escriben los resultados de memoria, tiempo de ejecución y tiempo de CPU
 def write_results(data, file):
 	path = str(pathlib.Path(__file__).parent.resolve()) + "/results/" + file
 
@@ -37,7 +37,7 @@ def write_results(data, file):
 		writer.writerow(header)
 		writer.writerow(data)
 		
-		
+#se escriben los resultados de cada una de las funciones		
 def write_output_txt(data, file):
 	path = str(pathlib.Path(__file__).parent.resolve()) + "/results/" + file
 	
@@ -52,6 +52,7 @@ def write_output_txt(data, file):
 		f.write(data)
 		f.close()
 
+#calculo de estadisticas por fila
 def calculate_by_row():
 	
 	start = time.time()
@@ -76,6 +77,7 @@ def calculate_by_row():
 	return results
 	
 
+#calculo de estadísticos por columna
 def calculate_by_column():
 	
 	start = time.time()
@@ -112,6 +114,7 @@ def calculate_by_column():
 	results = [end-start, cpu_diff]
 	return results
 
+#calculo de estadisticos para toda la tabla
 def calculate_for_all_data():
 	
 	start = time.time()
@@ -144,7 +147,7 @@ def calculate_for_all_data():
 	return results
 	
 
-
+#calculo del t-test
 def calculate_ttest():
 	start = time.time()
 	cpu_start = process_time()
@@ -180,6 +183,7 @@ def calculate_ttest():
 	return results
 
 
+#se realiza la llamada secuencial de todas las funciones
 def get_benchmarks():
 
 	print("Calculando por fila\n")

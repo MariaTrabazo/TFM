@@ -6,6 +6,7 @@ library("ggplot2")
 library("ggfortify")
 library("rgl")
 
+#se escriben los resultados de memoria, tiempo de ejecución y tiempo de CPU
 write_results <- function(folder, file, df){
     path <- here(folder, file)
     write.table(df, path, append = TRUE, quote = FALSE, sep=" ", dec=".",
@@ -13,6 +14,7 @@ write_results <- function(folder, file, df){
 
 }
 
+#se escriben los resultados de cada una de las funciones
 write_output_txt <- function(folder, file, data){
 	path <- here(folder, file)
 	write.table(data, file = path, append = TRUE,
@@ -20,6 +22,7 @@ write_output_txt <- function(folder, file, data){
 
 }
 
+#calculo de estadisticas por fila
 calculate_by_row <- function(){
 
 	start_time <- Sys.time()
@@ -37,6 +40,7 @@ calculate_by_row <- function(){
 
 }
 
+#calculo de estadísticos por columna
 calculate_by_column <- function(){
 
 	start_time <- Sys.time()
@@ -54,6 +58,7 @@ calculate_by_column <- function(){
 
 }
 
+#calculo de estadisticos para toda la tabla
 calculate_for_all_data <- function(){
 
 	start_time <- Sys.time()
@@ -81,7 +86,7 @@ calculate_for_all_data <- function(){
 
 
 
-
+#calculo del t-test
 calculate_ttest<- function(){
 
 	start_time <- Sys.time()
@@ -101,7 +106,7 @@ calculate_ttest<- function(){
 
 }
 
-
+#se realiza la llamada secuencial de todas las funciones
 get_benchmarks <- function(){
 
 	print("Calculando por fila")

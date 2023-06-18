@@ -25,6 +25,76 @@ fn main() {
     get_benchmarks();
 }
 
+
+//se lee el fichero en formato fasta
+fn read_fasta(folder: &str, file: &str)->Vec<String>  {
+
+    let string_path = &current_dir().unwrap();
+    let mut current_path= PathBuf::new();
+    current_path.push(string_path);
+    current_path.push(folder);
+    current_path.push(file);
+    
+    let mut array= vec![];
+    let reader = fasta::Reader::from_file(&current_path.as_path()).unwrap();
+    for result in reader.records() {
+        let record = result.unwrap();
+        
+        let sequence = record.seq();
+        let sequence_str = String::from_utf8_lossy(sequence).to_string();
+        
+        array.push(sequence_str);
+    }
+
+    return array;
+
+    
+}
+
+//se escriben los resultados de memoria, tiempo de ejecución y tiempo de CPU
+fn write_results(time: f64, cpu_time: f64, file: &str){
+
+    
+    let string_path = &current_dir().unwrap();
+    let mut current_path= PathBuf::new();
+    current_path.push(string_path);
+    current_path.push("results");
+    current_path.push(file);
+
+   
+    let mut data_file = OpenOptions::new()
+        .append(true)
+        .open(current_path)
+        .unwrap();
+
+    let mut wtr = csv::WriterBuilder::new()
+        .delimiter(b' ')
+        .from_writer(data_file);
+    wtr.serialize(("Rust", "", time, cpu_time));
+    wtr.flush();
+    
+}
+
+//se escriben los resultados de cada una de las funciones	
+fn write_output_txt(data: &str, file: &str){
+
+    
+    let string_path = &current_dir().unwrap();
+    let mut current_path= PathBuf::new();
+    current_path.push(string_path);
+    current_path.push("results");
+    current_path.push(file);
+
+    let mut data_file = OpenOptions::new()
+        .append(true)
+        .open(current_path)
+        .unwrap();
+
+    
+    data_file.write(data.as_bytes());
+}
+
+//se descargan las secuencias de la base de datos
 fn get_sequences_from_database() -> Result<Vec<f64> , Error>  {
     
     let start = Instant::now();
@@ -55,78 +125,8 @@ fn get_sequences_from_database() -> Result<Vec<f64> , Error>  {
     Ok(array)
 }
 
-fn read_fasta(folder: &str, file: &str)->Vec<String>  {
 
-    let string_path = &current_dir().unwrap();
-    let mut current_path= PathBuf::new();
-    current_path.push(string_path);
-    current_path.push(folder);
-    current_path.push(file);
-    
-    let mut array= vec![];
-    let reader = fasta::Reader::from_file(&current_path.as_path()).unwrap();
-    for result in reader.records() {
-        let record = result.unwrap();
-        
-        let sequence = record.seq();
-        let sequence_str = String::from_utf8_lossy(sequence).to_string();
-        
-        array.push(sequence_str);
-    }
-
-    return array;
-
-    
-}
-
-fn write_results(time: f64, cpu_time: f64, file: &str){
-
-    
-    let string_path = &current_dir().unwrap();
-    let mut current_path= PathBuf::new();
-    current_path.push(string_path);
-    current_path.push("results");
-    current_path.push(file);
-
-    // Open a file with append option
-    let mut data_file = OpenOptions::new()
-        .append(true)
-        .open(current_path)
-        .unwrap();
-
-    // Write to a file
-    //let mut wtr = csv::Writer::from_writer(data_file);
-    let mut wtr = csv::WriterBuilder::new()
-        .delimiter(b' ')
-        .from_writer(data_file);
-    wtr.serialize(("Rust", "", time, cpu_time));
-    wtr.flush();
-    
-    //data_file
-        //.write("Rust 2".as_bytes())
-        //.expect("write failed");
-}
-
-fn write_output_txt(data: &str, file: &str){
-
-    
-    let string_path = &current_dir().unwrap();
-    let mut current_path= PathBuf::new();
-    current_path.push(string_path);
-    current_path.push("results");
-    current_path.push(file);
-
-    // Open a file with append option
-    let mut data_file = OpenOptions::new()
-        .append(true)
-        .open(current_path)
-        .unwrap();
-
-    // Write to a file
-    
-    data_file.write(data.as_bytes());
-}
-
+//se realiza el alineamiento de secuencias  
 fn align_two_sequences()-> Vec<f64>{
     
     let start = Instant::now();
@@ -153,6 +153,7 @@ fn align_two_sequences()-> Vec<f64>{
 	return array;
 }
 
+//se obtiene la reversa complementaria
 fn get_complementary_reverse_sequence()->Vec<f64>{
 
     let start = Instant::now();
@@ -174,6 +175,7 @@ fn get_complementary_reverse_sequence()->Vec<f64>{
 
 }
 
+//se obtienen las secuencias según sus coordenadas
 fn get_sequence_from_coordinates()->Vec<f64>{
 
     let start = Instant::now();
@@ -203,6 +205,7 @@ fn get_sequence_from_coordinates()->Vec<f64>{
 	return array;
 }
 
+//se buscan coincidencias de subsecuencias
 fn match_subsequence()->Vec<f64>{
 
     let start = Instant::now();
@@ -212,7 +215,6 @@ fn match_subsequence()->Vec<f64>{
     let mut matches;
     write_output_txt("Rust subsequences matches", "results_match.txt");
     for seq_string in list_strings{
-        //println!("Secuancia: {}", seq_string);
         matches = 0;
         for sequence in &list_sequences{
             matches = matches + sequence.matches(seq_string).count();
@@ -230,6 +232,7 @@ fn match_subsequence()->Vec<f64>{
    
 }
 
+//se realiza la llamada secuencial de todas las funciones
 fn get_benchmarks(){
 
 	println!("Obteniendo las secuencias de NCBI\n");

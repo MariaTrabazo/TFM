@@ -10,7 +10,7 @@ using BenchmarkTools
 using Plots
 using HypothesisTests
 
-
+#se escriben los resultados de memoria, tiempo de ejecución y tiempo de CPU
 function write_results(data, file)
     path = dirname(Base.source_path()) * "/results/" * file
     open(path, "a") do f
@@ -19,6 +19,7 @@ function write_results(data, file)
     end
 end
 
+#se escriben los resultados de cada una de las funciones
 function write_output_txt(data, file)
     
     path = dirname(Base.source_path()) * "/results/" * file
@@ -28,6 +29,7 @@ function write_output_txt(data, file)
     end
 end
 
+#calculo de estadísticos por columna
 function calculate_by_column()
 	
 	start= time()
@@ -43,6 +45,7 @@ function calculate_by_column()
 
 end
 
+#calculo de estadisticos para toda la tabla
 function calculate_for_all_data()
 	
 	start= time()
@@ -66,6 +69,7 @@ function calculate_for_all_data()
 
 end
 
+#calculo de estadisticas por fila
 function calculate_by_row()
 	
 	start= time()
@@ -86,7 +90,7 @@ function calculate_by_row()
 end
 
 
-
+#calculo del t-test
 function calculate_ttest()
 
 	start= time()
@@ -110,7 +114,7 @@ function calculate_ttest()
 
 end
 
-
+#se realiza la llamada secuencial de todas las funciones
 function get_benchmarks()
 
 

@@ -14,7 +14,7 @@ for line in lines:
 
 path2 = str(pathlib.Path(__file__).parent.resolve()) + "/results/results_linear_regression.csv"
 df = pd.read_csv(path2, delimiter= ' ')
-df.at[3, 'CPU_time(s)'] = time_values[0]
+df.at[2, 'CPU_time(s)'] = time_values[0]
 df.to_csv(path2, index=False, sep=' ')
 
 path3 = str(pathlib.Path(__file__).parent.resolve()) + "/results/results_pca.csv"
